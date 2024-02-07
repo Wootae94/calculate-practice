@@ -9,9 +9,13 @@ public class Main {
         }
 
         String input = args[0];
-        Calculator calculator = new Calculator();
+        String[] tokens = input.split("\\s+");
+
+        double operand1 = Double.parseDouble(tokens[0]);
+        double operand2 = Double.parseDouble(tokens[2]);
+        String operator = tokens[1];
         try {
-            double result = calculator.calculate(input);
+            double result = Calculator.calculate(operand1, operator, operand2);
             System.out.println("Result: " + result);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());

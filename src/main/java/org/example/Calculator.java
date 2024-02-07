@@ -1,28 +1,19 @@
 package org.example;
 
+import org.example.operatorFactory.*;
+
+import java.util.List;
+
 public class Calculator {
 
-    public static double calculate(String input) {
-        String[] tokens = input.split("\\s+");
+    private static final List<ArithmetricOperator> arithmeticOpertors = List.of(new AdditionOperator(), new SubtractionOperator(), new MultiplicationOperator(), new DivisionOperator());
 
-        double operand1 = Double.parseDouble(tokens[0]);
-        double operand2 = Double.parseDouble(tokens[2]);
-        char operator = tokens[1].charAt(0);
-
-        switch (operator) {
-            case '+':
-                return operand1 + operand2;
-            case '-':
-                return operand1 - operand2;
-            case '*':
-                return operand1 * operand2;
-            case '/':
-                if (operand2 == 0) {
-                    throw new IllegalArgumentException("0으로는 나눌 수 없습니다.");
-                }
-                return operand1 / operand2;
-            default:
-                throw new IllegalArgumentException("사용할 수 없는 사칙연산입니다.: " + operator);
-        }
+    public static double calculate(double operand1, String operator, double operand2) {
+        return arithmeticOpertors.stream()
+                .filter(arithmetricOperator -> arithmetricOperator.supports(operator))
+                .map(arithmetricOperator -> arithmetricOperator.calculate(operand1,operand2))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("올바른 사칙연산이 아닙니다."));
     }
+
 }
